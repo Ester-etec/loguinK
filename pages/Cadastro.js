@@ -3,17 +3,24 @@ import { Text, TextInput, View, StyleSheet } from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { addDoc, collection } from 'firebase/firestore';
-import { auth, database } from '../firebase'; // Importe o módulo de autenticação e o banco de dados
+
+import { auth, database, app } from '../firebase'; // Importe o módulo de autenticação e o banco de dados
+
 
 export default function Cadastro({ navigation }) {
+
+  
+
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [senha2, setSenha2] = useState('');
+  const [nome, setNome] = useState('');
 
+  
   const confirmar = () => {
     if (senha !== senha2) {
       alert("Senhas não coincidem");
-    } else if (senha === "" || senha2 === "" || email === "") {
+    } else if (senha === "" || senha2 === "" || email === "" || nome === "") {
       alert("Preencha todos os campos");
     } else {
       cadastro();
@@ -21,13 +28,15 @@ export default function Cadastro({ navigation }) {
   }
 
   const cadastro = async () => {
+    
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
       const user = userCredential.user;
 
-      await addDoc(collection(database, 'users'), {
+      await addDoc(collection(database, 'default'), {
         uid: user.uid,
         email: email,
+        nome: nome
       });
 
       alert("Conta criada com sucesso");
@@ -41,12 +50,18 @@ export default function Cadastro({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Acesso ao Chat</Text>
+      <Text style={styles.titulo}>Acesso</Text>
       <TextInput
         style={styles.TextoInput}
         placeholder="Digite o Email"
         onChangeText={(email) => setEmail(email)}
         value={email}
+      />
+      <TextInput
+        style={styles.TextoInput}
+        placeholder="Digite o nome de usuario"
+        onChangeText={(nome) => setNome(nome)}
+        value={nome}
       />
       <TextInput
         style={styles.TextoInput}
