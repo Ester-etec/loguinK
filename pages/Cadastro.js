@@ -33,7 +33,7 @@ export default function Cadastro({ navigation }) {
       const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
       const user = userCredential.user;
 
-      await addDoc(collection(database, 'default'), {
+      await addDoc(collection(database, 'users'), {
         uid: user.uid,
         email: email,
         nome: nome

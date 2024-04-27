@@ -12,6 +12,9 @@ export default function Login() {
   const navigation = useNavigation();
 
   const login = () => {
+
+    console.log("loguinho")
+
     signInWithEmailAndPassword(auth, email, senha)
       .catch(function (error) {
         var errorCode = error.code;
@@ -37,7 +40,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Acesso ao Chat</Text>
+      <Text style={styles.titulo}>Acesso</Text>
       <TextInput
         style={styles.TextoInput}
         placeholder="Digite o Email"
