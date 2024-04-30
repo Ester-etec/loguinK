@@ -3,24 +3,30 @@ import { Text, TextInput, View, StyleSheet } from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { addDoc, collection } from 'firebase/firestore';
+import { useRoute } from '@react-navigation/native';
+
 
 import { auth, database, app } from '../firebase'; // Importe o módulo de autenticação e o banco de dados
 
 
-export default function Cadastro({ navigation }) {
-
+export default function CadastroIV({ navigation }) {
+  const route = useRoute();
+  const { nome, dtnasc, cpf, rm } = route.params;
   
 
   const [email, setEmail] = useState('');
+  const [email2, setEmail2] = useState('');
   const [senha, setSenha] = useState('');
   const [senha2, setSenha2] = useState('');
-  const [nome, setNome] = useState('');
+
 
   
   const confirmar = () => {
     if (senha !== senha2) {
       alert("Senhas não coincidem");
-    } else if (senha === "" || senha2 === "" || email === "" || nome === "") {
+    } if (email !== email2) {
+      alert("Emails não coincidem");
+    } else if (senha === "" || senha2 === "" || email === "" || email2 === "") {
       alert("Preencha todos os campos");
     } else {
       cadastro();
@@ -28,7 +34,7 @@ export default function Cadastro({ navigation }) {
   }
 
   const cadastro = async () => {
-    
+    console.log("fh")
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
       const user = userCredential.user;
@@ -36,11 +42,17 @@ export default function Cadastro({ navigation }) {
       await addDoc(collection(database, 'users'), {
         uid: user.uid,
         email: email,
-        nome: nome
+        nome: nome,
+        dataNascimento: dtnasc,
+        cpf: cpf,
+        rm: rm
       });
 
       alert("Conta criada com sucesso");
       navigation.navigate("Login");
+
+      
+
     } catch (error) {
       const errorMessage = error.message;
       alert(errorMessage);
@@ -59,20 +71,20 @@ export default function Cadastro({ navigation }) {
       />
       <TextInput
         style={styles.TextoInput}
-        placeholder="Digite o nome de usuario"
-        onChangeText={(nome) => setNome(nome)}
-        value={nome}
+        placeholder="Repita o Email"
+        onChangeText={(email2) => setEmail2(email2)}
+        value={email2}
       />
       <TextInput
         style={styles.TextoInput}
-        placeholder="Digite o Senha"
+        placeholder="Digite a Senha"
         onChangeText={(senha) => setSenha(senha)}
         value={senha}
       />
 
       <TextInput
         style={styles.TextoInput}
-        placeholder="Digite o Senha"
+        placeholder="Repita a Senha"
         onChangeText={(senha2) => setSenha2(senha2)}
         value={senha2}
       />
@@ -124,3 +136,5 @@ const styles = StyleSheet.create({
     fontSize: 30
   }
 });
+
+

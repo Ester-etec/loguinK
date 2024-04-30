@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from '@firebase/auth';
 import { auth } from '../firebase';
 
+
 export default function Login() {
 
   const [email, setEmail] = useState('');
@@ -21,6 +22,8 @@ export default function Login() {
         var errorMessage = error.message;
         alert(errorCode, errorMessage);
       });
+
+
   }
 
   useEffect(() => {
@@ -62,7 +65,7 @@ export default function Login() {
         <Text style={styles.botaotexto}>Logar</Text>
       </TouchableOpacity>
       <Text style={{ marginTop: 25, flexDirection: "row", alignItems: "center", alignSelf: "center" }}>Não possui uma conta?</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+      <TouchableOpacity onPress={() => navigation.navigate('CadastroI')}>
         <Text style={{ fontWeight: 'bold', color: '#0000CD', fontSize: 15 }}>Cadastro</Text>
       </TouchableOpacity>
     </View>
